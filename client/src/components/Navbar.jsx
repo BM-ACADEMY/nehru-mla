@@ -32,14 +32,13 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
-          <a
-            href="https://neyampuducherry.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+          <RouterLink
+            to="/"
             className="flex items-center"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <img src={logo} alt="Neyam Logo" className="h-10 w-auto" />
-          </a>
+          </RouterLink>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-6">
@@ -62,14 +61,6 @@ const Navbar = () => {
               className="cursor-pointer text-[#16182F] font-semibold hover:text-blue-600 transition"
             >
               Contacts
-            </RouterLink>
-
-            {/* Join Button */}
-            <RouterLink
-              to="/join"
-              className="bg-[#0A1944] text-white px-5 py-2 rounded-lg font-semibold shadow-md hover:bg-[#142c6a] transition"
-            >
-              Join Now
             </RouterLink>
           </div>
 
@@ -108,15 +99,6 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
             >
               Contacts
-            </RouterLink>
-
-            {/* Join Button in Mobile */}
-            <RouterLink
-              to="/join"
-              className="block w-full text-center bg-[#0A1944] text-white px-5 py-2 rounded-lg font-semibold shadow-md hover:bg-[#142c6a] transition"
-              onClick={() => setIsOpen(false)}
-            >
-              Join Now
             </RouterLink>
           </div>
         </div>

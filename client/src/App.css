@@ -1,42 +1,235 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* ==============================
+   Pledge Card Professional Styles
+   ============================== */
+
+body {
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+/* Container Card */
+.pledge-card {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: #848da3;
+  border: 3px solid rgb(49, 48, 142);     /* red border accent */
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  background-image: linear-gradient(145deg, #fffefc 0%, #fdf8f5 100%);
+}
+
+/* Header */
+.pledge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.75rem;
+}
+
+.votechori-logo {
+  height: 70px;
+  transition: transform 0.3s ease;
+}
+.votechori-logo:hover {
+  transform: scale(1.05);
+}
+
+.user-photo {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #cfd3d9;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+/* Date */
+.pledge-date {
+  font-size: 1rem;
+  color: #374151;
+  margin-bottom: 1.25rem;
+  text-align: right;
+  font-style: italic;
+}
+
+.underline {
+  border-bottom: 3px solid #dc2626;
+  padding: 0 6px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Trust Info */
+.trust-info {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.trust-title {
+  font-size: 2.2rem;
+  font-family: "Georgia", serif;
+  font-weight: bold;
+  color: #b91c1c;
+  letter-spacing: 1px;
+}
+.trust-subtitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1d4ed8;
+}
+.trust-reg {
+  font-size: 1rem;
+  font-style: italic;
+  color: #047857;
+}
+
+/* Divider */
+.divider {
+  margin: 1.75rem 0;
+  border: none;
+  border-top: 1px solid #d1d5db;
+}
+
+/* Statement */
+.pledge-statement {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: #1f2937;
+  text-align: justify;
+  padding: 0 1rem;
+}
+
+.pledge-statement .name {
+  font-weight: 800;
+  color: #1e3a8a;
+  text-transform: capitalize;
+}
+.pledge-statement .highlight {
+  font-weight: 700;
+  color: #b91c1c;
+}
+
+/* Signatures */
+.pledge-signatures {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 3rem;
+  gap: 3rem;
+}
+
+.pledge-signatures div {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.signature {
+  width: 160px;
+  height: 60px;
+  border-bottom: 2px solid #000;
+  margin: 0 auto 0.75rem;
+  position: relative;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
+.signature::after {
+  content: "Signature";
+  position: absolute;
+  bottom: -1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-family: "Brush Script MT", cursive;
+  letter-spacing: 1px;
+}
+
+.role-label {
+  font-weight: 700;
+  color: #111827;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+
+/* Floating Button */
+.floating-btn .button {
+  cursor: pointer;
+  border: none;
+  background: #24262b;
+  color: #fff;
+  width: 140px;          /* Increased size */
+  height: 140px;         /* Increased size */
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  display: grid;
+  place-content: center;
+  transition:
+    background 300ms,
+    transform 200ms;
+  font-weight: 600;
+  font-size: 1.1rem;      /* Slightly bigger font for better visibility */
+}
+
+.floating-btn .button__circle {
+  position: relative;
+  width: 60px;           /* Increased size */
+  height: 60px;          /* Increased size */
+  overflow: hidden;
+  background: #fff;
+  color: #1b1d22;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-btn {
+  position: fixed;      
+  bottom: 30px;         
+  right: 20px;          
+  z-index: 9999;        
+}
+
+/* Keep rest of your styles unchanged */
+.floating-btn .button__text {
+  position: absolute;
+  inset: 0;
+  animation: text-rotation 8s linear infinite;
+}
+
+.floating-btn .button__text > span {
+  position: absolute;
+  transform: rotate(calc(19deg * var(--index)));
+  inset: 7px;
+}
+
+.floating-btn .button__icon--copy {
+  position: absolute;
+  transform: translate(-150%, 150%);
+}
+
+.floating-btn .button:hover {
+  background: #000;
+  transform: scale(1.05);
+}
+
+.floating-btn .button:hover .button__icon {
+  color: #000;
+}
+
+.floating-btn .button:hover .button__icon:first-child {
+  transition: transform 0.3s ease-in-out;
+  transform: translate(150%, -150%);
+}
+
+.floating-btn .button:hover .button__icon--copy {
+  transition: transform 0.3s ease-in-out 0.1s;
+  transform: translate(0);
+}
+
+@keyframes text-rotation {
   to {
-    transform: rotate(360deg);
+    rotate: 360deg;
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }

@@ -4,7 +4,7 @@ import backgroundImage from "../assets/BannerN1.png";
 
 export default function Banner() {
   return (
-    <section className="w-full relative pt-20 bg-white">
+    <section className="w-full relative pt-24 bg-white">
       {/* Container for alignment with other sections */}
       <div className="container max-w-7xl mx-auto px-4">
         <div className="w-full relative">
