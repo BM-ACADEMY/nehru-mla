@@ -8,7 +8,7 @@ export default function Home() {
       icon: <MapPin className="w-6 h-6 text-[#0A1944]" />,
       title: "Current Position",
       description:
-        "Member of the Puducherry Legislative Assembly (MLA) representing the Orleampeth constituency since May 2021 (Independent).",
+        "Member of the Puducherry Legislative Assembly (MLA) representing the Orleanpet constituency since May 2021 (Independent).",
     },
     {
       icon: <Award className="w-6 h-6 text-[#0A1944]" />,
@@ -20,7 +20,7 @@ export default function Home() {
       icon: <Users className="w-6 h-6 text-[#0A1944]" />,
       title: "Constituency Focus",
       description:
-        "Known for his strong grassroots connect and dedication to addressing the needs of the people of Orleampeth.",
+        "Known for his strong grassroots connect and dedication to addressing the needs of the people of Orleanpet.",
     },
     {
       icon: <Star className="w-6 h-6 text-[#0A1944]" />,

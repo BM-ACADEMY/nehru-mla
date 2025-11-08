@@ -13,7 +13,7 @@ const achievements = [
   },
 //   {
 //     title: "Political Experience",
-//     description: "Elected as MLA from Orleampeth in 2011 and 2021, actively contributing to local governance, policy-making, and community development initiatives.",
+//     description: "Elected as MLA from Orleanpet in 2011 and 2021, actively contributing to local governance, policy-making, and community development initiatives.",
 //     // image: Image2
 //   },
   {
@@ -28,7 +28,7 @@ const achievements = [
   },
 //   {
 //     title: "Electoral Success",
-//     description: "Won multiple elections, including the 2021 Orleampeth seat as an independent candidate, demonstrating strong public support and leadership.",
+//     description: "Won multiple elections, including the 2021 Orleanpet seat as an independent candidate, demonstrating strong public support and leadership.",
 //     image: "/images/election.png"
 //   }
 ];

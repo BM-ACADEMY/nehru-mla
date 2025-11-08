@@ -14,7 +14,7 @@ const puducherryAreas = [
   "Kurumbapet",
   "Mudaliarpet",
   "Uppalam",
-  "Orleampeth",
+  "Orleanpet",
   "Reddiarpalayam",
   "Karaikal Town",
   "Thirunallar",
