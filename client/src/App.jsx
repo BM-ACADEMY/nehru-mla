@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import Aboutsection from "./components/About";
 
 
-import Home from "./Pages/Home";
+import Home from "./pages/Home";
 import JoinSection from "./pages/Join"
 
 export default function App() {
