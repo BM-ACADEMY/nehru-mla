@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Aboutsection from "./components/About";
 
-import Joinsection from "./Pages/Join";
-import Home from "./Pages/Home";
-import JoinForm from "./Pages/JoinForm";
-import PledgeCard from "./Pages/Pledge";
+
+import Home from "./pages/Home";
+import JoinForm from "./pages/JoinForm";
+import PledgeCard from "./pages/Pledge";
 import { Scrolltotop } from "./ScrollToTop";
 
 export default function App() {
