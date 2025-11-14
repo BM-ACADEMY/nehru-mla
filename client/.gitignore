@@ -1,24 +1,55 @@
+# ====================================
+# Node / JavaScript Projects
+# ====================================
+
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+out/
+coverage/
+
+# Env files
+.env
+.env.* 
+!.env.example
+
 # Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
+logs/
+*.log
 
-node_modules
-dist
-dist-ssr
-*.local
+# Temporary files
+tmp/
+temp/
+*.tmp
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Files
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+
+# Cache
+.cache/
+.eslintcache
+.stylelintcache
+parcel-cache/
+.next/cache/
+sass-cache/
+
+# Typescript
+*.tsbuildinfo
+
+# Others
+/.husky/_/
