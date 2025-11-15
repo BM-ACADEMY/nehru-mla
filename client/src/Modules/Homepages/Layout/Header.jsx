@@ -1,146 +1,119 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import Logo from "../../../assets/putsf-logo.jpg";
+import logo from "../../../assets/banner/nehru_logo.png";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Updated menu items
+  const menuItems = [
+    { label: "Home", path: "/" },
+    { label: "About Us", path: "/about" },
+    { label: "Gallery", path: "/gallery" },
+    { label: "Blog", path: "/blog" },
+    { label: "Contact", path: "/contact" },
+  ];
+
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
-  // ⭐ Blog added here
-  const menuItems = ["Home", "Gallery", "Blog", "Contact"];
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleHomeClick = (e) => {
-    e.preventDefault();
-    if (location.pathname === "/") scrollToTop();
-    else {
-      navigate("/");
-      setTimeout(scrollToTop, 300);
-    }
-  };
-
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white shadow-[0_4px_25px_rgba(0,0,0,0.05)]">
-      <div className="w-full px-6 md:px-16 lg:px-24 xl:px-32 h-[75px] flex items-center justify-between">
+    <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
+      <div className="w-full h-[80px] px-6 md:px-12 lg:px-20 flex items-center justify-between">
 
-        {/* LEFT — LOGO + TEXT */}
-        <button
-          onClick={handleHomeClick}
-          className="flex items-center gap-4 cursor-pointer"
-        >
+        {/* LEFT → LOGO + TEXT */}
+        <Link to="/" className="flex items-center gap-3">
           <img
-            src={Logo}
+            src={logo}
             alt="Logo"
-            className="w-12 h-12 md:w-14 md:h-14 object-contain"
+            className="w-16 h-16 object-contain"
           />
 
           <div className="leading-tight">
-            <div className="text-2xl md:text-3xl font-extrabold text-[#002B75]">
+            {/* Tamil Name — BLUE */}
+            <div className="text-2xl font-extrabold" style={{ color: "#002B75" }}>
               நாமது மக்கள் கழகம்
             </div>
-            <div className="text-sm text-gray-600">
+
+            {/* English Name — RED */}
+            <div className="text-sm font-semibold" style={{ color: "#D62828" }}>
               Namathu Makkal Kazhagam
             </div>
           </div>
-        </button>
+        </Link>
 
-        {/* CENTER MENU (Desktop) */}
-        <div className="hidden md:flex flex-1 justify-center gap-10 text-lg font-medium">
+        {/* CENTER MENU */}
+        <nav className="hidden md:flex items-center gap-10 text-[17px] font-semibold">
           {menuItems.map((item) => {
-            const isHome = item === "Home";
+            const active = location.pathname === item.path;
             return (
               <Link
-                key={item}
-                to={
-                  isHome
-                    ? "/"
-                    : `/${item.toLowerCase().replace(/\s+/g, "")}`
-                }
-                onClick={(e) => {
-                  if (isHome) handleHomeClick(e);
-                }}
-                className="relative group"
+                key={item.label}
+                to={item.path}
+                className={`relative group ${
+                  active ? "text-[#002B75]" : "text-[#002B75]"
+                }`}
               >
-                <span className="cursor-pointer text-gray-800 group-hover:text-[#002B75] transition">
-                  {item}
-                </span>
+                {item.label}
 
-                {/* Hover underline */}
-                <span className="absolute left-0 -bottom-1 w-0 group-hover:w-full h-[2px] bg-[#002B75] transition-all duration-300"></span>
+                {/* Bottom line — Blue */}
+                <span
+                  className={`absolute left-0 -bottom-1 h-[2px] bg-[#002B75] transition-all 
+                  ${active ? "w-full" : "w-0 group-hover:w-full"}`}
+                ></span>
               </Link>
             );
           })}
-        </div>
+        </nav>
 
-        {/* RIGHT — Join Us Button */}
+        {/* RIGHT → RED JOIN BUTTON */}
         <button
           onClick={() => navigate("/license")}
-          className="hidden md:block px-6 py-2 rounded-full text-white font-semibold 
-          bg-gradient-to-r from-[#D62828] via-[#0033A0] to-[#F2E205] 
-          shadow-lg hover:scale-105 transition duration-300"
+          className="hidden md:block px-6 py-2 rounded-md text-white font-bold transition"
+          style={{ backgroundColor: "#D62828" }}
         >
           Join Us Now
         </button>
 
-        {/* MOBILE MENU BUTTON */}
-        <button
-          aria-label="menu-btn"
-          onClick={toggleMobileMenu}
-          className="md:hidden p-2"
-        >
-          <svg width="30" height="30" viewBox="0 0 30 30">
-            <path d="M3 7h24M3 15h24M3 23h24" stroke="#000" strokeWidth="2" />
+        {/* Mobile Menu Icon */}
+        <button onClick={toggleMobileMenu} className="md:hidden p-2">
+          <svg width="32" height="32" viewBox="0 0 30 30">
+            <path d="M4 7h22M4 15h22M4 23h22" stroke="#000" strokeWidth="2" />
           </svg>
         </button>
       </div>
 
       {/* MOBILE MENU */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white px-6 py-4 shadow-md">
-          <ul className="flex flex-col space-y-4 text-lg">
-            {menuItems.map((item) => {
-              const isHome = item === "Home";
-              return (
-                <li key={item}>
-                  <Link
-                    to={
-                      isHome
-                        ? "/"
-                        : `/${item.toLowerCase().replace(/\s+/g, "")}`
-                    }
-                    onClick={(e) => {
-                      setMobileMenuOpen(false);
-                      if (isHome) handleHomeClick(e);
-                    }}
-                    className="block py-2 border-b border-gray-200"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              );
-            })}
-
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                navigate("/license");
-              }}
-              className="w-full mt-2 py-2 rounded-full text-white font-bold 
-              bg-gradient-to-r from-[#D62828] via-[#0033A0] to-[#F2E205] 
-              shadow-md"
-            >
-              Join Us Now
-            </button>
+        <div className="md:hidden bg-white shadow-lg px-6 py-4">
+          <ul className="flex flex-col gap-3 text-lg font-medium">
+            {menuItems.map((item) => (
+              <li key={item.label}>
+                <Link
+                  to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-2 border-b border-gray-200 text-[#002B75]"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
+
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/license");
+            }}
+            className="w-full mt-3 py-3 font-bold text-white rounded-md"
+            style={{ backgroundColor: "#D62828" }}
+          >
+            Join Us Now
+          </button>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 

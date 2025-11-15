@@ -11,7 +11,8 @@ export default function MembershipDownload() {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState(""); // ✅ New success message state
 
-  const API_URL = `${import.meta.env.VITE_API_BASE_URL}/license-download`;
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/license/license-download`;
+
 
   const simulateProgress = () => {
     let current = 0;

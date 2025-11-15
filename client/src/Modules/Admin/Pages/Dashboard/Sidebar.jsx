@@ -7,8 +7,10 @@ import {
   HiNewspaper,
   HiViewGrid,
   HiClipboardList,
-  HiOutlineExclamationCircle, // ✅ Complaints icon
+  HiOutlineExclamationCircle,
 } from "react-icons/hi";
+
+import logo from "../../../../assets/banner/nehru_logo.png";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,66 +25,63 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* 📱 Mobile Menu Button */}
-      <div className="md:hidden fixed top-4 left-4 z-50">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="p-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-colors"
-        >
-          {isOpen ? <HiX size={24} /> : <HiMenu size={24} />}
-        </button>
-      </div>
-
-      {/* 🧭 Sidebar */}
-      <aside
-        className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white flex flex-col justify-between
-          transform ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0 transition-transform duration-300 ease-in-out z-40`}
+      {/* Mobile Toggle */}
+      <button
+        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-white shadow-md rounded-md"
+        onClick={() => setIsOpen(!isOpen)}
       >
-        {/* Header */}
-        <div className="p-5 border-b border-gray-800 text-center">
-          <h1 className="text-xl font-bold tracking-wide text-white">
-            PUTSF Admin
-          </h1>
-          <p className="text-xs text-gray-400 mt-1">Management Panel</p>
+        {isOpen ? <HiX size={24} /> : <HiMenu size={24} />}
+      </button>
+
+      {/* Sidebar */}
+      <aside
+        className={`fixed inset-y-0 left-0 w-64 bg-white text-gray-800 shadow-lg
+        flex flex-col transition-transform duration-300 z-40
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+      >
+        {/* Logo */}
+        <div className="p-6 border-b border-gray-200 flex flex-col items-center">
+          <img
+            src={logo}
+            className="w-16 h-16 rounded-full border border-gray-300 object-cover"
+            alt="logo"
+          />
+          <h2 className="text-lg font-semibold mt-3 text-gray-900">NMK Admin</h2>
+          <p className="text-xs text-gray-500">Management Panel</p>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto p-4">
-          <ul className="space-y-2">
-            {links.map((link) => (
-              <li key={link.to}>
-                <NavLink
-                  to={link.to}
-                  end
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-2 rounded-md text-sm font-medium transition-all cursor-pointer
-                    ${
-                      isActive
-                        ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md"
-                        : "text-gray-300 hover:bg-gray-800 hover:text-white"
-                    }`
-                  }
-                >
-                  <span className="text-lg">{link.icon}</span>
-                  <span>{link.label}</span>
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+        <nav className="p-4 space-y-2 flex-1">
+          {links.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-2 rounded-md text-sm transition-all duration-200
+                ${
+                  isActive
+                    ? "bg-[#F7E27A] text-gray-900 font-semibold shadow-sm"
+                    : "text-gray-700 hover:bg-gray-100 hover:text-black"
+                }`
+              }
+            >
+              <span className="text-lg">{item.icon}</span>
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
 
         {/* Footer */}
-        <div className="p-3 text-center text-xs text-gray-500 border-t border-gray-800 bg-gray-900">
-          © {new Date().getFullYear()} PUTSF
+        <div className="text-center py-3 text-xs text-gray-500 border-t border-gray-200">
+          © {new Date().getFullYear()} NMK
         </div>
       </aside>
 
-      {/* Overlay for mobile */}
+      {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/20 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}

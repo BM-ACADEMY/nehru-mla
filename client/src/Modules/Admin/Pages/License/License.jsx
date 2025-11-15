@@ -1,116 +1,86 @@
 import React, { useEffect, useState } from "react";
-import API from "../../../../api"; // ✅ Use centralized API instance
+import API from "../../../../api";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CheckCircle, Trash2, Download, Clock } from "lucide-react";
 
 export default function LicenseAdmin() {
-  const API_URL = `/license/`; // ✅ Base handled by API instance
+  const API_URL = `/license/license/`;
 
   const [licenses, setLicenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  /* ---------------- Fetch Licenses ---------------- */
+  /* Fetch Licenses */
   const fetchLicenses = async () => {
     try {
       const res = await API.get(API_URL);
-      setLicenses(res.data);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      toast.error("❌ Failed to fetch licenses", { className: "toast-error" });
+      setLicenses(Array.isArray(res.data) ? res.data : []);
+    } catch {
+      toast.error("Failed to fetch licenses");
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchLicenses();
   }, []);
 
-  /* ---------------- Approve License ---------------- */
+  /* Approve License */
   const handleApprove = async (id) => {
     try {
       const res = await API.post(`${API_URL}${id}/approve/`);
-      toast.success("✅ License approved successfully!", { className: "toast-success" });
+      toast.success("License approved");
 
       fetchLicenses();
 
-      // ✅ If WhatsApp link is available
       if (res.data?.whatsapp_link) {
         toast.info(
-          <div className="flex flex-col gap-1">
-            <span>📱 Click below to share via WhatsApp:</span>
-            <a
-              href={res.data.whatsapp_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-200 underline font-semibold"
-            >
-              Open WhatsApp
-            </a>
-          </div>,
-          { autoClose: 8000, className: "toast-info" }
+          <a
+            href={res.data.whatsapp_link}
+            target="_blank"
+            className="text-white underline"
+          >
+            Share on WhatsApp
+          </a>,
+          { autoClose: 7000 }
         );
       }
-    } catch (err) {
-      toast.error("❌ Failed to approve license", { className: "toast-error" });
+    } catch {
+      toast.error("Failed to approve");
     }
   };
 
-  /* ---------------- Delete License ---------------- */
+  /* Delete License */
   const confirmDelete = (license) => {
     setDeleteTarget(license);
   };
 
   const handleDelete = async () => {
-    if (!deleteTarget) return;
     try {
       await API.delete(`${API_URL}${deleteTarget._id}/`);
-      toast.success("🗑️ License deleted successfully!", { className: "toast-success" });
+      toast.success("License deleted");
       setDeleteTarget(null);
       fetchLicenses();
-    } catch (err) {
-      toast.error("❌ Failed to delete license", { className: "toast-error" });
+    } catch {
+      toast.error("Failed to delete");
     }
   };
 
-  if (loading) return <p className="text-center mt-10 text-gray-500">Loading...</p>;
+  if (loading)
+    return (
+      <p className="text-center mt-10 text-gray-500">
+        Loading license requests...
+      </p>
+    );
 
   return (
-    <div className="p-6 min-h-screen bg-gray-50">
-      {/* 🟩 Toast Container */}
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        pauseOnHover
-        transition={Slide}
-      />
+    <div className="p-6 bg-white min-h-screen">
+      <ToastContainer autoClose={2000} transition={Slide} />
 
-      {/* 🟦 Toast Styles */}
-      <style>{`
-        .Toastify__toast {
-          font-weight: 600;
-          border-radius: 10px;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-        }
-        .toast-success {
-          background: linear-gradient(to right, #0033A0, #000000);
-          color: #fff;
-        }
-        .toast-error {
-          background: linear-gradient(to right, #D62828, #000000);
-          color: #fff;
-        }
-        .toast-info {
-          background: linear-gradient(to right, #0033A0, #D62828);
-          color: #fff;
-        }
-      `}</style>
-
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">License Requests</h1>
+      <h1 className="text-2xl font-bold text-gray-800 mb-8">
+        License Requests
+      </h1>
 
       {licenses.length === 0 ? (
         <p className="text-gray-500">No license requests found.</p>
@@ -119,22 +89,26 @@ export default function LicenseAdmin() {
           {licenses.map((item) => (
             <div
               key={item._id}
-              className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition p-5"
+              className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition p-5"
             >
+              {/* PHOTO + INFO */}
               <div className="flex items-center gap-4">
                 {item.photo ? (
                   <img
                     src={item.photo}
                     alt="photo"
-                    className="w-20 h-20 object-cover rounded-xl border"
+                    className="w-20 h-20 object-cover rounded-lg border"
                   />
                 ) : (
-                  <div className="w-20 h-20 bg-gray-100 flex items-center justify-center rounded-xl text-gray-400">
+                  <div className="w-20 h-20 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400">
                     No Photo
                   </div>
                 )}
+
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
+                  <h2 className="text-lg font-semibold text-gray-800">
+                    {item.name}
+                  </h2>
                   <p className="text-sm text-gray-600">{item.phone}</p>
                   <p className="text-xs text-gray-500">{item.aadhar_number}</p>
                 </div>
@@ -144,6 +118,7 @@ export default function LicenseAdmin() {
                 <span className="font-medium">Address:</span> {item.address}
               </p>
 
+              {/* STATUS + ACTIONS */}
               <div className="mt-4 flex items-center justify-between">
                 <span
                   className={`flex items-center gap-1 text-sm font-medium ${
@@ -165,29 +140,50 @@ export default function LicenseAdmin() {
                   {!item.is_approved && (
                     <button
                       onClick={() => handleApprove(item._id)}
-                      className="px-3 py-1.5 bg-gradient-to-r from-[#0033A0] via-[#D62828] to-black text-white text-sm rounded-lg cursor-pointer hover:opacity-90"
+                      className="px-3 py-1 bg-[#F7E27A] text-black rounded-md shadow-sm hover:bg-[#e3cf5f] text-sm"
                     >
                       Approve
                     </button>
                   )}
+
                   <button
                     onClick={() => confirmDelete(item)}
-                    className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg cursor-pointer"
-                    title="Delete"
+                    className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-md"
                   >
                     <Trash2 size={16} />
                   </button>
                 </div>
               </div>
 
+              {/* PDF Download */}
               {item.is_approved && item.license_pdf && (
                 <a
-                  href={`http://127.0.0.1:8000${item.license_pdf}`}
+                  href={item.license_pdf}
                   target="_blank"
-                  rel="noopener noreferrer"
                   className="mt-3 inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium"
                 >
                   <Download size={16} className="mr-1" /> Download License
+                </a>
+              )}
+
+              {/* WhatsApp Share */}
+              {item.is_approved && (
+                <a
+                  href={`https://api.whatsapp.com/send?phone=91${item.phone}&text=${encodeURIComponent(
+                    `🎉 Hello ${item.name}! Your membership card has been approved.\n\nDownload here:\n${window.location.origin}/#/license-download`
+                  )}`}
+                  target="_blank"
+                  className="mt-2 inline-flex items-center text-green-600 hover:text-green-800 text-sm font-medium"
+                >
+                  <svg
+                    fill="currentColor"
+                    width="18"
+                    viewBox="0 0 24 24"
+                    className="mr-1"
+                  >
+                    <path d="M12 0C5.4 0 0 5.2 0 11.6c0 2.1.6 4.2 1.7 6L0 24l6.4-1.7c1.8.9 3.8 1.4 5.6 1.4 6.6 0 12-5.2 12-11.6S18.6 0 12 0zm0 21.3c-1.7 0-3.5-.5-5-1.4l-.4-.2-3.8 1 1-3.6-.2-.4c-1-1.5-1.5-3.2-1.5-5 0-5 4.2-9.1 9.4-9.1s9.4 4.1 9.4 9.1c0 5.1-4.2 9.1-9.4 9.1zm5.2-6c-.3-.1-1.7-.9-2-.9-.3 0-.4.1-.6.4-.2.3-.7.9-.9 1-.2.1-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.4-1-.8-1.7-1.8-1.9-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.2-.2.2-.3.3-.5.1-.2.1-.3 0-.5 0-.1-.6-1.4-.8-1.9-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 3 1.2 3.2.1.2 2.1 3.3 5.2 4.5.7.3 1.2.4 1.6.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2.1-1.4.3-.7.3-1.3.2-1.4-.1-.1-.4-.3-.7-.4z" />
+                  </svg>
+                  WhatsApp
                 </a>
               )}
             </div>
@@ -195,25 +191,30 @@ export default function LicenseAdmin() {
         </div>
       )}
 
-      {/* 🟥 Delete Confirmation Modal */}
+      {/* DELETE POPUP */}
       {deleteTarget && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl shadow-xl w-96 text-center">
-            <h3 className="text-xl font-bold text-[#D62828] mb-3">⚠️ Delete Confirmation</h3>
-            <p className="text-gray-700 mb-5">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white border border-gray-200 rounded-lg shadow-xl p-6 w-96 text-center">
+            <h3 className="text-lg font-semibold text-red-600 mb-3">
+              Delete License?
+            </h3>
+
+            <p className="text-gray-700 mb-4">
               Are you sure you want to delete <br />
-              <span className="font-semibold text-[#0033A0]">“{deleteTarget.name}”</span>?
+              <span className="font-semibold">{deleteTarget.name}</span>?
             </p>
-            <div className="flex justify-center gap-4">
+
+            <div className="flex justify-center gap-3">
               <button
                 onClick={handleDelete}
-                className="px-5 py-2 bg-gradient-to-r from-[#D62828] to-[#000000] text-white rounded-lg font-semibold hover:opacity-90"
+                className="px-5 py-2 bg-red-500 text-white rounded-md"
               >
-                Yes, Delete
+                Delete
               </button>
+
               <button
                 onClick={() => setDeleteTarget(null)}
-                className="px-5 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 font-semibold"
+                className="px-5 py-2 bg-gray-300 rounded-md"
               >
                 Cancel
               </button>

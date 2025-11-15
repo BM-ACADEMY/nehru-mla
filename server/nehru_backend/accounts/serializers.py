@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import AdminUser
@@ -10,16 +11,20 @@ class AdminLoginSerializer(serializers.Serializer):
         email = data.get('email')
         password = data.get('password')
 
-        # Use Django ORM correctly
-        user = AdminUser.objects.filter(email=email).first()
+        # use Django's authenticate so any auth backends are used
+        user = authenticate(username=email, password=password)
+        if user is None:
+            # fallback: some setups use email field and authenticate might expect username
+            user_obj = AdminUser.objects.filter(email=email).first()
+            if user_obj and user_obj.check_password(password):
+                user = user_obj
 
         if not user:
-            raise serializers.ValidationError("Admin with this email does not exist.")
+            raise serializers.ValidationError("Incorrect email or password.")
 
-        if not user.check_password(password):
-            raise serializers.ValidationError("Incorrect password.")
+        if not user.is_active:
+            raise serializers.ValidationError("User account is disabled.")
 
-        # Generate JWT tokens
         refresh = RefreshToken.for_user(user)
 
         return {

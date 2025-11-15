@@ -7,13 +7,15 @@ from .views import home
 urlpatterns = [
     path("", home, name="home"),
     path("admin-django/", admin.site.urls),
-    path('api/accounts/', include('accounts.urls')),
+   path('api/accounts/', include('nehru_backend.accounts.urls')),
+path('api/blog/', include('nehru_backend.blog.urls')),
+path('api/gallery/', include('nehru_backend.gallery.urls')),
+path('api/banner/', include('nehru_backend.banner.urls')),
+path('api/license/', include('nehru_backend.license.urls')),
+path('api/complaints/', include('nehru_backend.complaints.urls')),
 
-    path("api/gallery/", include('gallery.urls')),
-    path("api/", include('banner.urls')),
-    path("api/blog/", include('blog.urls')),
-    path('api/', include('license.urls')),
-    path("api/", include('complaints.urls')),
+
+
     ]
 
 if settings.DEBUG:

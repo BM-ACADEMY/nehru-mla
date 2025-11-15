@@ -34,7 +34,7 @@ API.interceptors.response.use(
         try {
           // Request a new access token
           const res = await axios.post(
-            `${baseURL}/admin/refresh/`,
+            `${baseURL}/accounts/refresh/`,
             { refresh: refreshToken },
             { headers: { "Content-Type": "application/json" } }
           );

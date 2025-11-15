@@ -11,9 +11,11 @@ const Complaint = () => {
     subject: "",
     message: "",
   });
+
   const [loading, setLoading] = useState(false);
 
-  const API_URL = `${import.meta.env.VITE_API_BASE_URL}/complaints/`;
+  // ✅ FIXED API ENDPOINT
+  const API_URL = `${import.meta.env.VITE_API_BASE_URL}/complaints/complaints/`;
 
   const handleChange = (e) => {
     setFormData({
@@ -24,6 +26,7 @@ const Complaint = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.name || !formData.phone || !formData.message) {
       toast.warn("⚠️ Please fill in all required fields.", {
         className: "toast-warning",
@@ -32,13 +35,15 @@ const Complaint = () => {
     }
 
     setLoading(true);
+
     try {
       await axios.post(API_URL, formData);
+
       toast.success("Complaint submitted successfully!", {
         className: "toast-success",
       });
 
-      // Clear form fields after successful submission
+      // Clear form
       setFormData({
         name: "",
         phone: "",
@@ -48,6 +53,7 @@ const Complaint = () => {
       });
     } catch (error) {
       console.error(error);
+
       toast.error("❌ Failed to submit complaint. Please try again later.", {
         className: "toast-error",
       });
@@ -58,7 +64,7 @@ const Complaint = () => {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#0033A0]/10 via-white to-[#D62828]/10 py-16 px-4 md:px-12">
-      {/* ✅ Toast Container */}
+      {/* Toast Container */}
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -68,7 +74,7 @@ const Complaint = () => {
         transition={Slide}
       />
 
-      {/* ✅ Toast Styles */}
+      {/* Toast Styles */}
       <style>{`
         .Toastify__toast {
           font-weight: 600;
@@ -93,22 +99,22 @@ const Complaint = () => {
         <h2 className="text-4xl font-extrabold text-center mb-6 bg-gradient-to-r from-[#0033A0] via-[#D62828] to-black bg-clip-text text-transparent">
           Submit a Complaint
         </h2>
+
         <p className="text-center text-gray-600 mb-8">
           We value your feedback and take all concerns seriously. Please share your issue below 👇
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+
           {/* Name */}
           <div>
-            <label className="block text-sm font-semibold mb-2">
-              Full Name *
-            </label>
+            <label className="block text-sm font-semibold mb-2">Full Name *</label>
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#0033A0] focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#0033A0]"
               placeholder="Enter your name"
               required
             />
@@ -116,15 +122,13 @@ const Complaint = () => {
 
           {/* Phone */}
           <div>
-            <label className="block text-sm font-semibold mb-2">
-              Phone Number *
-            </label>
+            <label className="block text-sm font-semibold mb-2">Phone Number *</label>
             <input
               type="tel"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#D62828] focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#D62828]"
               placeholder="Enter your phone number"
               required
             />
@@ -132,15 +136,13 @@ const Complaint = () => {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-semibold mb-2">
-              Email (optional)
-            </label>
+            <label className="block text-sm font-semibold mb-2">Email (optional)</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#0033A0] focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#0033A0]"
               placeholder="you@example.com"
             />
           </div>
@@ -153,28 +155,26 @@ const Complaint = () => {
               name="subject"
               value={formData.subject}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#D62828] focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#D62828]"
               placeholder="Complaint subject"
             />
           </div>
 
           {/* Message */}
           <div>
-            <label className="block text-sm font-semibold mb-2">
-              Complaint Message *
-            </label>
+            <label className="block text-sm font-semibold mb-2">Complaint Message *</label>
             <textarea
               name="message"
               value={formData.message}
               onChange={handleChange}
               rows="5"
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#0033A0] focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#0033A0]"
               placeholder="Describe your complaint..."
               required
             ></textarea>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <div className="text-center">
             <button
               type="submit"
@@ -184,6 +184,7 @@ const Complaint = () => {
               {loading ? "Submitting..." : "Submit Complaint"}
             </button>
           </div>
+
         </form>
       </div>
     </main>

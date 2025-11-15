@@ -13,8 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -----------------------------
 # Load environment variables
 # -----------------------------
-load_dotenv(BASE_DIR / ".env")           # main .env
-load_dotenv(BASE_DIR / ".env.local", override=True)  # local overrides if exists
+# Load .env from the server root directory
+load_dotenv(os.path.join(BASE_DIR.parent, ".env"))
+
 
 # -----------------------------
 # Security
@@ -26,11 +27,14 @@ DEBUG = os.getenv("DEBUG", "False").lower() in ["true", "1", "yes"]
 RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
 
 ALLOWED_HOSTS = [
-    "putsf1.onrender.com",            # backend domain
-    "putsf1-frontend.onrender.com",   # frontend domain
+    "putsf1.onrender.com",
+    "putsf1-frontend.onrender.com",
     "localhost",
     "127.0.0.1",
+    "82.25.85.114",
+    "nehru.namathumakkalkazhagam.com",
 ]
+
 
 if RENDER_EXTERNAL_HOSTNAME:  
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
@@ -45,25 +49,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_extensions',
 
     # Third-party
     'corsheaders',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
 
     # Local apps
-    'blog',
-    'gallery',
-    'banner',
-    'license',
-    'complaints',
-    'accounts',
+    'nehru_backend.blog',
+'nehru_backend.banner',
+'nehru_backend.gallery',
+'nehru_backend.license',
+'nehru_backend.complaints',
+'nehru_backend.accounts',
+
+
 ]
 
 
-# -----------------------------
-# Middleware
-# -----------------------------
+# ------------------# -----------------------------
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -180,7 +184,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "nehru_backend", "static")]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Media files (user uploads)
-MEDIA_URL = '/media/'
+MEDIA_URL = "https://nehru.namathumakkalkazhagam.com/media/"
 MEDIA_ROOT = BASE_DIR / "media"  # Create a separate folder for media
 
 
@@ -219,7 +223,7 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),   # short access token (auto-refresh)
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),   # short access token (auto-refresh)
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),     # stay logged in 7 days
     "ROTATE_REFRESH_TOKENS": True,                   # generate new refresh token each time
     "BLACKLIST_AFTER_ROTATION": True,
