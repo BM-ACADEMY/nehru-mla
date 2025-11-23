@@ -16,51 +16,57 @@ const Contact = () => {
 
         <div className="bg-white shadow-xl rounded-3xl p-8 md:p-12 space-y-8 border border-gray-100">
           <p className="text-lg text-gray-700 text-center max-w-2xl mx-auto leading-relaxed">
-            Have questions or want to connect? Reach out to us through the details below.
-            We’d love to hear from you!
+            Reach out to the office through the details below.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+
             {/* 📍 Address */}
             <div className="flex flex-col items-center">
               <MapPin className="w-12 h-12 mb-3 text-[#0033A0]" />
               <h3 className="font-semibold text-xl bg-gradient-to-r from-[#0033A0] to-[#D62828] bg-clip-text text-transparent">
-                Address
+                Office Address
               </h3>
               <p className="text-gray-600 mt-2 leading-relaxed">
-                NO1, 2nd Cross, Pothigai Nagar, Nawarkulam,
+                No.24, New Iyyanar Koil Street,
                 <br />
-                Lawspet Post, Puducherry – 605008
+                Vasugi Nagar,
+                <br />
+                Kosapalayam,
+                <br />
+                Puducherry – 605013
               </p>
             </div>
 
-            {/* ✉️ Email */}
+            {/* 🏛 MLA Details */}
             <div className="flex flex-col items-center">
-              <Mail className="w-12 h-12 mb-3 text-[#D62828]" />
-              <h3 className="font-semibold text-xl bg-gradient-to-r from-[#0033A0] to-[#D62828] bg-clip-text text-transparent">
-                Email
+              <h3 className="font-semibold text-xl bg-gradient-to-r from-[#0033A0] to-[#D62828] bg-clip-text text-transparent mb-3">
+                MLA – Orleanpet
               </h3>
-              <a
-                href="mailto:swaminathan933@gmail.com"
-                className="text-[#D62828] hover:text-[#0033A0] font-medium mt-2 transition"
-              >
-                swaminathan933@gmail.com
-              </a>
+              <p className="text-gray-600 leading-relaxed">
+                Party: All India N.R. Congress
+                <br />
+                Name: G. Nehru (a) Kuppusamy
+              </p>
             </div>
 
             {/* 📞 Phone */}
             <div className="flex flex-col items-center">
               <Phone className="w-12 h-12 mb-3 text-black" />
               <h3 className="font-semibold text-xl bg-gradient-to-r from-[#0033A0] to-[#D62828] bg-clip-text text-transparent">
-                Phone
+                Contact Numbers
               </h3>
+              <p className="text-[#0033A0] font-medium mt-2">
+                Office: 0413 – 2220602, 2232261
+              </p>
               <a
-                href="tel:+919787721199"
-                className="text-[#0033A0] hover:text-[#D62828] font-medium mt-2 transition"
+                href="tel:+919843048384"
+                className="text-[#D62828] hover:text-[#0033A0] font-medium transition"
               >
-                +91 97877 21199
+                Mobile: 98430-48384
               </a>
             </div>
+
           </div>
         </div>
       </div>
