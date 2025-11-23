@@ -1,0 +1,1 @@
+web: gunicorn nehru_backend.wsgi:application
