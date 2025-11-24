@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../Pages/Dashboard/Sidebar";
 import Breadcrumbs from "../Pages/Dashboard/Breadcrumbs";
-import { clearAuth } from "../../../utils/auth";
+import { clearAuth, getAccessToken } from "../../../utils/auth";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = getAccessToken();
+
+    // If no token → redirect to login BEFORE rendering admin pages
+    if (!token) {
+      navigate("/admin/login", { replace: true });
+    }
+  }, [navigate]);
 
   const handleLogout = () => {
     clearAuth();
