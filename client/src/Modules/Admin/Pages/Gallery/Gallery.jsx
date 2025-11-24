@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import API from "../../../../api";
+import api from "../../../../utils/axiosInstance";   // ✅ FIXED IMPORT
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -17,7 +17,7 @@ const AdminGallery = () => {
   /* Fetch Images */
   const fetchImages = async () => {
     try {
-      const res = await API.get(API_URL);
+      const res = await api.get(API_URL);   // ✅ FIXED
       setImages(res.data);
     } catch {
       toast.error("Failed to fetch images");
@@ -66,7 +66,7 @@ const AdminGallery = () => {
     formData.append("image", file);
 
     try {
-      await API.post(API_URL, formData, {
+      await api.post(API_URL, formData, {   // ✅ FIXED
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress: (e) =>
           setProgress(Math.round((e.loaded * 100) / e.total)),
@@ -119,7 +119,7 @@ const AdminGallery = () => {
   /* Perform Delete */
   const handleDelete = async (id) => {
     try {
-      await API.delete(`${API_URL}${id}/`);
+      await api.delete(`${API_URL}${id}/`);   // ✅ FIXED
       setImages((prev) => prev.filter((img) => img._id !== id));
       toast.success("Image deleted");
     } catch {
@@ -236,7 +236,7 @@ const GalleryCard = ({ img, onDelete, onUpdated, API_URL }) => {
     if (file) form.append("image", file);
 
     try {
-      await API.patch(`${API_URL}${img._id}/`, form, {
+      await api.patch(`${API_URL}${img._id}/`, form, {   // ✅ FIXED
         headers: { "Content-Type": "multipart/form-data" },
       });
       setEditing(false);

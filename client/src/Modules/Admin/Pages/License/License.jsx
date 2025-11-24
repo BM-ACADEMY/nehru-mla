@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import API from "../../../../api";
+import api from "../../../../utils/axiosInstance";   // ✅ FIXED IMPORT
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CheckCircle, Trash2, Download, Clock } from "lucide-react";
@@ -14,7 +14,7 @@ export default function LicenseAdmin() {
   /* ---------------- FETCH LICENSE LIST ---------------- */
   const fetchLicenses = async () => {
     try {
-      const res = await API.get(API_URL);
+      const res = await api.get(API_URL);   // ✅ FIXED
       setLicenses(Array.isArray(res.data) ? res.data : []);
     } catch {
       toast.error("Failed to fetch licenses");
@@ -36,10 +36,10 @@ export default function LicenseAdmin() {
 
   const handleDelete = async () => {
     try {
-      await API.delete(`${API_URL}${deleteTarget._id}/`);
+      await api.delete(`${API_URL}${deleteTarget._id}/`);  // ✅ FIXED
       toast.success("License deleted");
       setDeleteTarget(null);
-      fetchLicenses();
+      fetchLicenses(); // refresh list
     } catch {
       toast.error("Failed to delete license");
     }

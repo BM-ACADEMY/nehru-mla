@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import API from "../../../../api";
+import api from "../../../../utils/axiosInstance";   // ✅ Correct axios instance
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,6 +16,7 @@ const BlogAdmin = () => {
     content: "",
     image: null,
   });
+
   const [preview, setPreview] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -28,7 +29,7 @@ const BlogAdmin = () => {
 
   const fetchBlogs = async () => {
     try {
-      const res = await API.get(API_URL);
+      const res = await api.get(API_URL);   // ✅ FIXED
       setBlogs(res.data);
     } catch {
       toast.error("Failed to load blogs");
@@ -50,34 +51,33 @@ const BlogAdmin = () => {
 
   /* Submit Form */
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const fd = new FormData();
-  fd.append("title", form.title);
-  fd.append("subtitle", form.subtitle);
-  fd.append("content", form.content);
-  if (form.image) fd.append("image", form.image);
+    const fd = new FormData();
+    fd.append("title", form.title);
+    fd.append("subtitle", form.subtitle);
+    fd.append("content", form.content);
+    if (form.image) fd.append("image", form.image);
 
-  try {
-    if (isEditing) {
-      await API.patch(`${API_URL}${form._id}/`, fd, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
-      toast.success("Blog updated");
-    } else {
-      await API.post(API_URL, fd, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
-      toast.success("Blog created");
+    try {
+      if (isEditing) {
+        await api.patch(`${API_URL}${form._id}/`, fd, {   // ✅ FIXED
+          headers: { "Content-Type": "multipart/form-data" }
+        });
+        toast.success("Blog updated");
+      } else {
+        await api.post(API_URL, fd, {   // ✅ FIXED
+          headers: { "Content-Type": "multipart/form-data" }
+        });
+        toast.success("Blog created");
+      }
+
+      resetForm();
+      fetchBlogs();
+    } catch {
+      toast.error("Error saving blog");
     }
-
-    resetForm();
-    fetchBlogs();
-  } catch {
-    toast.error("Error saving blog");
-  }
-};
-
+  };
 
   const handleEdit = (blog) => {
     setForm({
@@ -95,13 +95,11 @@ const BlogAdmin = () => {
   };
 
   /* Delete Logic */
-  const confirmDelete = (blog) => {
-    setDeleteTarget(blog);
-  };
+  const confirmDelete = (blog) => setDeleteTarget(blog);
 
   const handleDelete = async () => {
     try {
-      await API.delete(`${API_URL}${deleteTarget._id}/`);
+      await api.delete(`${API_URL}${deleteTarget._id}/`);   // ✅ FIXED
       toast.success("Blog deleted");
       fetchBlogs();
       setDeleteTarget(null);

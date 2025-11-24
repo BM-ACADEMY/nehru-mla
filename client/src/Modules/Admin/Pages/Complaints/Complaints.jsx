@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import API from "../../../../api";
+import api from "../../../../utils/axiosInstance";   // ✅ FIXED IMPORT
 import { toast, ToastContainer } from "react-toastify";
 import { HiTrash } from "react-icons/hi";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,7 +15,7 @@ const Complaints = () => {
   const fetchComplaints = async () => {
     try {
       setLoading(true);
-      const response = await API.get(API_URL);
+      const response = await api.get(API_URL);   // ✅ FIXED
 
       setComplaints(response.data);
       setError("");
@@ -34,7 +34,7 @@ const Complaints = () => {
   /* Delete Complaint */
   const handleDelete = async (id) => {
     try {
-      await API.delete(`${API_URL}${id}/`);
+      await api.delete(`${API_URL}${id}/`);   // ✅ FIXED
       setComplaints((prev) => prev.filter((item) => item.id !== id));
       toast.success("Complaint deleted");
     } catch {
