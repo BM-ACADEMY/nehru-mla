@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import API from "../../../../api";
+import api from "../../../../utils/axiosInstance";   // Correct axios instance
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -16,7 +16,7 @@ const BannerAdmin = () => {
   /* Fetch banners */
   const fetchBanners = async () => {
     try {
-      const res = await API.get(API_URL);
+      const res = await api.get(API_URL);   // ✅ FIXED
       setBanners(res.data);
     } catch {
       toast.error("Failed to fetch banners");
@@ -64,7 +64,7 @@ const BannerAdmin = () => {
     formData.append("image", file);
 
     try {
-      await API.post(API_URL, formData, {
+      await api.post(API_URL, formData, {   // ✅ FIXED
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress: (e) =>
           setProgress(Math.round((e.loaded * 100) / e.total)),
@@ -116,7 +116,7 @@ const BannerAdmin = () => {
   /* Perform Delete */
   const handleDelete = async (id) => {
     try {
-      await API.delete(`/banner/${id}/`);
+      await api.delete(`/banner/${id}/`);   // ✅ FIXED
 
       setBanners((prev) => prev.filter((b) => b._id !== id));
 
