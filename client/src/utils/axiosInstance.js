@@ -1,6 +1,6 @@
 // src/utils/axiosInstance.js
 import axios from "axios";
-import { getAccessToken, clearAuth, isTokenExpired } from "./auth";
+import { getAccessToken, clearAuth } from "./auth";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -8,7 +8,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = getAccessToken();
-  if (token && !isTokenExpired(token)) {
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
