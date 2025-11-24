@@ -188,8 +188,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Media files (user uploads)
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"  # Create a separate folder for media
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # MEDIA_URL = "https://nehru.namathumakkalkazhagam.com/media/"
 # MEDIA_ROOT = BASE_DIR / "media"  # Create a separate folder for media
 
