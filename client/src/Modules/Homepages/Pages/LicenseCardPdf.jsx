@@ -4,15 +4,16 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import API from "../../../api";
 import { toast } from "react-toastify";
+import signature from "../../../assets/banner/signature.png";
+import personImage from "../../../assets/banner/Untitled design.png";
+import qrcode from "../../../assets/banner/qrcode.svg";
 
-// ⭐ IMPORT LOGO
 import logo from "../../../assets/banner/nehru_logo.png";
 
 export default function LicenseCardPdf({ license = {} }) {
   const cardRef = useRef();
   const [loading, setLoading] = useState(false);
 
-  /* ----------------------- SANITIZE ----------------------- */
   const sanitize = (str) =>
     !str || typeof str !== "string"
       ? "Member"
@@ -20,7 +21,6 @@ export default function LicenseCardPdf({ license = {} }) {
 
   const safeName = sanitize(license.name);
 
-  /* ----------------------- DOWNLOAD PDF ----------------------- */
   const downloadPdf = async () => {
     try {
       const canvas = await html2canvas(cardRef.current, {
@@ -43,7 +43,6 @@ export default function LicenseCardPdf({ license = {} }) {
     }
   };
 
-  /* ----------------------- APPROVE + UPLOAD ----------------------- */
   const approveAndUpload = async () => {
     try {
       setLoading(true);
@@ -84,13 +83,14 @@ export default function LicenseCardPdf({ license = {} }) {
         window.open(whatsLink, "_blank", "noopener,noreferrer");
       }, 200);
     } catch (err) {
-      toast.error("Upload failed: " + (err.response?.data?.error || err.message));
+      toast.error(
+        "Upload failed: " + (err.response?.data?.error || err.message)
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  /* ----------------------- FALLBACK VALUES ----------------------- */
   const photo = license.photo || "/static/default_photo.jpg";
 
   const name = license.name || "Member";
@@ -98,7 +98,6 @@ export default function LicenseCardPdf({ license = {} }) {
   const phone = license.phone || "9xxxxxxxxx";
   const address = license.address || "Address";
 
-  /* ----------------------- CARD DESIGN ----------------------- */
   return (
     <div className="p-8">
       <div
@@ -107,8 +106,7 @@ export default function LicenseCardPdf({ license = {} }) {
           width: 650,
           height: 420,
           background: "#ffffff",
-          borderRadius: 16,
-          border: "5px solid #0033A0",
+          border: "1px solid #0a0a0aad",
           padding: 0,
           position: "relative",
           overflow: "hidden",
@@ -121,10 +119,12 @@ export default function LicenseCardPdf({ license = {} }) {
             height: 90,
             display: "flex",
             alignItems: "center",
-            paddingLeft: 18,
-            background:
-              "linear-gradient(90deg, #D40000 30%, #FFFFFF 30% 60%, #FCD200 60%)",
-            borderBottom: "4px solid #0033A0",
+            paddingLeft: 28,
+
+            // ⭐ NEW CLEAN RED–WHITE–RED HEADER LIKE REFERENCE IMAGE
+            background: "linear-gradient(to bottom, #fa180e)",
+
+            borderBottom: "1px solid #0a0a0aad",
           }}
         >
           <div
@@ -133,7 +133,6 @@ export default function LicenseCardPdf({ license = {} }) {
               height: 75,
               borderRadius: "50%",
               background: "#fff",
-              border: "3px solid #0033A0",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -156,8 +155,8 @@ export default function LicenseCardPdf({ license = {} }) {
               style={{
                 margin: 0,
                 fontSize: 26,
-                fontWeight: 900,
-                color: "#0033A0",
+                fontWeight: 700,
+                color: "white",
               }}
             >
               NAMATHU MAKKAL KAZHAGAM
@@ -165,16 +164,39 @@ export default function LicenseCardPdf({ license = {} }) {
             <p
               style={{
                 margin: 0,
-                marginTop: 4,
                 fontSize: 14,
+                textAlign: "center",
                 fontWeight: 600,
-                color: "#0033A0",
+                color: "white",
               }}
             >
               Official Membership Identification Card
             </p>
           </div>
         </div>
+        
+
+        <div
+            style={{
+              textAlign: "center",
+              marginBottom: "1px",
+              marginTop: "12px",
+              width: "100%",
+              // This container should fill the space above the details row
+            }}
+          >
+            <span
+              style={{
+                padding: "4px 15px",
+                borderRadius: "15px",
+                color: "red",
+                fontWeight: 700,
+                fontSize: 12,
+              }}
+            >
+              உறுப்பினர் அட்டை
+            </span>
+          </div>
 
         {/* BODY */}
         <div
@@ -185,90 +207,122 @@ export default function LicenseCardPdf({ license = {} }) {
             height: 275,
           }}
         >
-          {/* LEFT SIDE */}
-          <div>
-            <div
+          <div
+            style={{
+              position: "absolute",
+              top: "60%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 1, // Ensure it is behind the text/details (which are zIndex 5)
+              opacity: 0.08, // Set high transparency
+              pointerEvents: "none", // Prevent click events
+            }}
+          >
+            <img
+              src={logo} 
+              alt="Background Watermark"
+              crossOrigin="anonymous"
               style={{
-                width: 160,
-                height: 185,
-                borderRadius: 12,
-                overflow: "hidden",
-                border: "4px solid #D40000",
+                width: "300px", // Large size for watermark effect
+                height: "300px",
+                objectFit: "contain",
               }}
-            >
-              <img
-                src={photo}
-                crossOrigin="anonymous"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            </div>
+            />
+          </div>
 
+          
+          {/* LEFT SIDE (PHOTO + DETAILS SIDE BY SIDE) */}
+          <div style={{ display: "flex", gap: 65 }}>
+            {/* PHOTO */}
+                <div
+                style={{ 
+                    display: "flex", 
+                    flexDirection: "column", 
+                    alignItems: "center", 
+                    gap: 5, // Space between photo and QR
+                }}
+            >
+                {/* PHOTO */}
+                <div
+                    style={{
+                        width: 160,
+                        height: 185,
+                        borderRadius: 5,
+                        overflow: "hidden",
+                        border: "1px solid black",
+                        flexShrink: 0,
+                    }}
+                >
+                    <img
+                        src={photo}
+                        crossOrigin="anonymous"
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                </div>
+                
+                {/* QR CODE */}
+                <img
+                    src={qrcode} 
+                    alt="QR Code"
+                    crossOrigin="anonymous"
+                    style={{
+                      width: 60,
+                      height: 60,
+                      alignSelf: "flex-start",
+                      marginTop: 5,
+                    }}
+                />
+            </div>
+            
+
+            {/* DETAILS RIGHT OF PHOTO */}
             <div
               style={{
-                marginTop: 15,
-                background: "#F7F9FC",
                 padding: "10px 12px",
                 borderRadius: 10,
-                border: "1px solid #CBD4E1",
-                width: 160,
+                width: 320,
+                height: 185,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-evenly",
               }}
             >
-              <p style={{ margin: 4, fontSize: 14 }}>
-                <strong style={{ color: "#0033A0" }}>Name:</strong> {name}
-              </p>
-              <p style={{ margin: 4, fontSize: 14 }}>
-                <strong style={{ color: "#0033A0" }}>Aadhar:</strong> {aadhar}
-              </p>
-              <p style={{ margin: 4, fontSize: 14 }}>
-                <strong style={{ color: "#0033A0" }}>Phone:</strong> {phone}
-              </p>
-              <p style={{ margin: 4, fontSize: 14 }}>
-                <strong style={{ color: "#0033A0" }}>Address:</strong> {address}
-              </p>
+              {/* ROW 1 */}
+              <div style={{ display: "flex", fontSize: 14 }}>
+                <span style={{ width: 90, fontWeight: 700, color: "#0033A0" }}>
+                  Name
+                </span>
+                <span>{name}</span>
+              </div>
+
+              {/* ROW 2 */}
+              <div style={{ display: "flex", fontSize: 14 }}>
+                <span style={{ width: 90, fontWeight: 700, color: "#0033A0" }}>
+                  Aadhar
+                </span>
+                <span>{aadhar}</span>
+              </div>
+
+              {/* ROW 3 */}
+              <div style={{ display: "flex", fontSize: 14 }}>
+                <span style={{ width: 90, fontWeight: 700, color: "#0033A0" }}>
+                  Phone
+                </span>
+                <span>{phone}</span>
+              </div>
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
+          {/* RIGHT SIDE (SIGNATURE) */}
           <div
             style={{
-              flex: 1,
+              width: 250,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
             }}
-          >
-            <div
-              style={{
-                width: 160,
-                height: 160,
-                borderRadius: "50%",
-                background: "#0033A0",
-                border: "6px solid #FCD200",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "#fff",
-                fontWeight: 900,
-                fontSize: 36,
-              }}
-            >
-              NMK
-            </div>
-
-            <div style={{ marginTop: 12, textAlign: "center" }}>
-              <div
-                style={{
-                  width: 160,
-                  borderBottom: "3px solid #0033A0",
-                  margin: "0 auto",
-                }}
-              />
-              <p style={{ fontSize: 12, marginTop: 4, color: "#0033A0" }}>
-                Authorized Signature
-              </p>
-            </div>
-          </div>
+          ></div>
         </div>
 
         {/* FOOTER */}
@@ -277,21 +331,98 @@ export default function LicenseCardPdf({ license = {} }) {
             position: "absolute",
             bottom: 10,
             width: "100%",
-            textAlign: "center",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end", // ⭐ THIS FIXES ALIGNMENT
+            padding: "0 20px",
             fontSize: 12,
-            color: "#0033A0",
+            color: "#3a3939ad",
             fontWeight: 500,
           }}
         >
-          Official Document • Verify at NMK.IN • Do Not Duplicate
+        
+
+          {/* Bottom Right */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "100%",
+              padding: "20px 0",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-end",
+                gap: "20px",
+              }}
+            >
+              <div
+                style={{
+                  position: "relative",
+                  width: "200px",
+                  height: "150px",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: -22,
+                    right: -110,
+                    display: "flex",
+                    zIndex: "99",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <img
+                    src={signature}
+                    alt="signature"
+                    style={{
+                      width: 110,
+                      height: "auto",
+                      objectFit: "contain",
+                      marginBottom: 0,
+                    }}
+                  />
+                  <div
+                    style={{ color: "#0033A0", fontWeight: 600, marginTop: -2 }}
+                  >
+                    Authorized Signature
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  position: "relative",
+                  width: 260,
+                  height: 270,
+                }}
+              >
+                <img
+                  src={personImage}
+                  alt="Person"
+                  style={{
+                    position: "absolute",
+                    bottom: -30,
+                    right: -40,
+                    width: 300,
+                    height: 300,
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="flex gap-4 mt-6">
         <button
           onClick={downloadPdf}
-          className="px-5 py-2 bg-blue-600 text-white rounded-md"
+          className="px-5 py-2 bg-red-600 text-white rounded-md"
         >
           Download PDF
         </button>

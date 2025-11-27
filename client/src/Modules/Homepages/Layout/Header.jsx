@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../../../assets/banner/nehru_logo.png";
 import { UserPlus } from "lucide-react";
@@ -8,13 +8,48 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // 1. Changed About Us path to include the hash
   const menuItems = [
     { label: "Home", path: "/" },
-    { label: "About Us", path: "/about" },
+    { label: "About Us", path: "/#about" }, 
     { label: "Gallery", path: "/gallery" },
     { label: "Blog", path: "/blog" },
     { label: "Contact", path: "/contact" },
   ];
+
+  // 2. Effect to handle scrolling when arriving from a different page
+  useEffect(() => {
+    if (location.hash) {
+      const sectionId = location.hash.replace("#", "");
+      const element = document.getElementById(sectionId);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100); // Slight delay ensures the DOM is fully loaded
+      }
+    }
+  }, [location]);
+
+  // 3. Handler for smooth scrolling if already on the Home page
+  const handleNavClick = (e, path) => {
+    setMobileMenuOpen(false);
+
+    // Check if it's a hash link (e.g., /#about)
+    if (path.includes("#")) {
+      const [route, hash] = path.split("#");
+
+      // If we are already on the target route (Home), just scroll
+      if (location.pathname === route) {
+        e.preventDefault(); // Prevent router navigation
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+        // If element not found immediately, update URL hash manually (optional)
+        window.history.pushState(null, "", path);
+      }
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white shadow-sm backdrop-blur-md">
@@ -41,11 +76,14 @@ const Header = () => {
         {/* CENTER MENU */}
         <nav className="hidden lg:flex items-center gap-8 xl:gap-10 text-[17px] font-medium tracking-tight">
           {menuItems.map((item) => {
-            const active = location.pathname === item.path;
+            // Check active state (ignoring the hash for the match)
+            const active = location.pathname === item.path.split("#")[0] && item.path !== "/#about";
+            
             return (
               <Link
                 key={item.label}
                 to={item.path}
+                onClick={(e) => handleNavClick(e, item.path)} // Add Click Handler
                 className={`relative group py-2 transition-colors duration-300 ${
                   active ? "text-[#D62828]" : "text-[#002B75] hover:text-[#D62828]"
                 }`}
@@ -61,6 +99,7 @@ const Header = () => {
             );
           })}
         </nav>
+
         {/* RIGHT — JOIN BUTTON */}
         <button
           onClick={() => navigate("/license")}
@@ -93,7 +132,7 @@ const Header = () => {
               <li key={item.label}>
                 <Link
                   to={item.path}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleNavClick(e, item.path)} // Add Click Handler Here too
                   className="block py-3 border-b border-gray-200 text-[#002B75] transition hover:text-[#001f56]"
                 >
                   {item.label}
@@ -108,8 +147,8 @@ const Header = () => {
               navigate("/license");
             }}
             className="w-full mt-4 py-3 font-bold text-white rounded-full border-2 
-               border-[#D62828] flex items-center justify-center gap-2 shadow-md 
-               hover:shadow-lg transition-all hover:bg-[#c61f1f] hover:border-[#c61f1f]"
+              border-[#D62828] flex items-center justify-center gap-2 shadow-md 
+              hover:shadow-lg transition-all hover:bg-[#c61f1f] hover:border-[#c61f1f]"
             style={{ backgroundColor: "#D62828" }}
           >
             <UserPlus size={20} className="text-white" />
