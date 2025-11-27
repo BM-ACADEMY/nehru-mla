@@ -130,14 +130,16 @@ export default function MembershipDownload() {
 
         {loading && (
           <div className="w-full bg-gray-200 rounded-full h-3 mb-5 relative overflow-hidden">
-            <div
-              className="h-3 rounded-full bg-gradient-to-r from-[#0033A0] via-[#FF0000] to-[#000000]"
-              style={{ width: `${progress}%` }}
-            ></div>
-            <span className="absolute top-0 left-1/2 -translate-x-1/2 text-xs font-bold text-white mb-2">
-              {progress}%
-            </span>
-          </div>
+  <div
+    className="h-3 rounded-full bg-green-500"
+    style={{ width: `${progress}%` }}
+  ></div>
+
+  <span className="absolute top-0 left-1/2 -translate-x-1/2 text-xs font-bold text-white">
+    {progress}%
+  </span>
+</div>
+
         )}
 
         <button

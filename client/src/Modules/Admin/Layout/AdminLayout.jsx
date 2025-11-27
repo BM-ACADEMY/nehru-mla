@@ -102,15 +102,16 @@
 // export default AdminLayout;
 
 
-
-import React from "react";
+import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { HiMenuAlt1, HiBell } from "react-icons/hi";
 import Sidebar from "../Pages/Dashboard/Sidebar";
 import Breadcrumbs from "../Pages/Dashboard/Breadcrumbs";
 import { clearAuth } from "../../../utils/auth";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleLogout = () => {
     clearAuth();
@@ -118,21 +119,52 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar onLogout={handleLogout} />
+    <div className="flex h-screen bg-[#F3F4F6] font-sans antialiased">
+      {/* 1. Sidebar (Fixed on Mobile, Static on Desktop) */}
+      <Sidebar 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+        onLogout={handleLogout}
+      />
 
-      <div className="flex-1 md:ml-64 p-6 bg-gray-100 min-h-screen transition-all duration-300">
-        <div className="flex justify-between items-center mb-4">
-          <Breadcrumbs />
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition"
-          >
-            Logout
-          </button>
-        </div>
+      {/* 2. Main Content Wrapper */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        
+        {/* Top Header */}
+        <header className="bg-white border-b border-gray-200 h-20 flex items-center justify-between px-6 sticky top-0 z-30 shadow-sm">
+          
+          <div className="flex items-center gap-4">
+            {/* Hamburger (Mobile Only) */}
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7E27A]"
+            >
+              <HiMenuAlt1 size={26} />
+            </button>
+            
+            {/* Breadcrumbs (Desktop & Tablet) */}
+            <div className="hidden sm:block">
+              <Breadcrumbs />
+            </div>
+          </div>
 
-        <Outlet />
+        </header>
+
+        {/* Scrollable Main View */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
+          {/* Mobile Breadcrumbs (Visible only on tiny screens) */}
+          <div className="block sm:hidden mb-6">
+             <Breadcrumbs />
+          </div>
+
+          {/* Page Content Injection */}
+          <div className="animate-fade-in-up">
+            <Outlet />
+          </div>
+          
+          {/* Bottom spacer for mobile scrolling comfort */}
+          <div className="h-10 md:hidden"></div>
+        </main>
       </div>
     </div>
   );

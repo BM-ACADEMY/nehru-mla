@@ -7,100 +7,101 @@ import {
   HiViewGrid,
   HiClipboardList,
   HiOutlineExclamationCircle,
-  HiChevronDoubleLeft,
-  HiChevronDoubleRight,
   HiLogout
 } from "react-icons/hi";
 import logo from "../../../../assets/banner/nehru_logo.png";
 
-const Sidebar = ({ isMobileOpen, setIsMobileOpen, isCollapsed, setIsCollapsed, onLogout }) => {
-  
+const Sidebar = ({ isOpen, onClose, onLogout }) => {
   const links = [
-    { to: "/admin/banner", label: "Banner", icon: <HiViewGrid size={22} /> },
-    { to: "/admin/gallery", label: "Gallery", icon: <HiPhotograph size={22} /> },
-    { to: "/admin/blogs", label: "Blogs", icon: <HiNewspaper size={22} /> },
-    { to: "/admin/license", label: "Memberships", icon: <HiClipboardList size={22} /> },
-    { to: "/admin/complaints", label: "Complaints", icon: <HiOutlineExclamationCircle size={22} /> },
+    { to: "/admin/banner", label: "Banner", icon: <HiViewGrid size={20} /> },
+    { to: "/admin/gallery", label: "Gallery", icon: <HiPhotograph size={20} /> },
+    { to: "/admin/blogs", label: "Blogs", icon: <HiNewspaper size={20} /> },
+    { to: "/admin/license", label: "Memberships", icon: <HiClipboardList size={20} /> },
+    { to: "/admin/complaints", label: "Complaints", icon: <HiOutlineExclamationCircle size={20} /> },
   ];
+
+  // Common classes for the sidebar container
+  const sidebarClasses = `
+    fixed inset-y-0 left-0 z-50 w-72 bg-white text-gray-800 shadow-2xl transform transition-transform duration-300 ease-in-out
+    md:translate-x-0 md:static md:shadow-none border-r border-gray-100
+    ${isOpen ? "translate-x-0" : "-translate-x-full"}
+  `;
 
   return (
     <>
-      {/* Mobile Overlay Backdrop */}
-      {isMobileOpen && (
+      {/* Mobile Overlay */}
+      {isOpen && (
         <div
-          className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40 md:hidden transition-opacity"
-          onClick={() => setIsMobileOpen(false)}
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 md:hidden"
+          onClick={onClose}
         />
       )}
 
-      {/* Sidebar Container */}
-      <aside
-        className={`fixed md:relative z-50 h-screen bg-white border-r border-gray-200 shadow-xl md:shadow-none transition-all duration-300 ease-in-out flex flex-col
-        ${isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-        ${isCollapsed ? "md:w-20" : "md:w-64"} w-64
-        `}
-      >
-        {/* Header / Logo */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-100">
-          <div className={`flex items-center gap-3 ${isCollapsed ? "justify-center w-full" : ""}`}>
-            <img src={logo} className="w-8 h-8 rounded-full object-cover" alt="Logo" />
-            {!isCollapsed && (
-              <span className="font-bold text-gray-800 text-lg tracking-wide">NMK Admin</span>
-            )}
-          </div>
-          {/* Mobile Close Button */}
-          <button onClick={() => setIsMobileOpen(false)} className="md:hidden text-gray-500">
-            <HiX size={24} />
-          </button>
-        </div>
-
-        {/* Navigation Links */}
-        <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-1">
-          {links.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              onClick={() => setIsMobileOpen(false)}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative
-                ${isActive 
-                  ? "bg-[#F7E27A] text-gray-900 font-semibold shadow-sm" 
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                }
-                ${isCollapsed ? "justify-center" : ""}
-                `
-              }
+      <aside className={sidebarClasses}>
+        <div className="flex flex-col h-full">
+          {/* Header / Logo */}
+          <div className="h-24 flex items-center justify-between px-6 border-b border-gray-100">
+            <div className="flex items-center gap-3">
+              <img
+                src={logo}
+                alt="Logo"
+                className="w-10 h-10 rounded-full object-cover border-2 border-[#F7E27A]"
+              />
+              <div>
+                <h1 className="font-bold text-lg leading-tight tracking-wide text-gray-900">
+                  NMK Admin
+                </h1>
+                <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400">
+                  Dashboard
+                </span>
+              </div>
+            </div>
+            {/* Mobile Close Button */}
+            <button 
+              onClick={onClose} 
+              className="md:hidden p-2 text-gray-500 hover:text-red-500 transition-colors"
             >
-              <span className="shrink-0">{item.icon}</span>
-              
-              {!isCollapsed && <span>{item.label}</span>}
+              <HiX size={24} />
+            </button>
+          </div>
 
-              {/* Tooltip for Collapsed Mode */}
+          {/* Navigation Links */}
+          <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+            <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+              Menu
+            </p>
+            {links.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={onClose} // Close sidebar on mobile when link clicked
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group
+                  ${
+                    isActive
+                      ? "bg-[#F7E27A] text-gray-900 font-bold shadow-md shadow-yellow-200/50"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  }`
+                }
+              >
+                {/* Icon wrapper to keep alignment perfect */}
+                <span className="shrink-0">{item.icon}</span>
+                <span className="text-sm font-medium">{item.label}</span>
+              </NavLink>
+            ))}
+          </nav>
+
+          {/* Footer / Logout Area */}
+          <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+            <button
+              onClick={onLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200"
+            >
+              <HiLogout size={20} />
+              <span className="text-sm font-semibold">Logout</span>
+            </button>
             
-            </NavLink>
-          ))}
-        </nav>
-
-        {/* Footer Actions */}
-        <div className="p-3 border-t border-gray-100">
-          
-          {/* Logout Button (Visible in Sidebar) */}
-          <button 
-            onClick={onLogout}
-            className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-red-600 hover:bg-red-50 transition-colors
-            ${isCollapsed ? "justify-center" : ""}`}
-          >
-            <HiLogout size={22} />
-            {!isCollapsed && <span className="font-medium">Logout</span>}
-          </button>
-
-          {/* Desktop Collapse Toggle */}
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hidden md:flex items-center justify-center w-full mt-2 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
-          >
-            {isCollapsed ? <HiChevronDoubleRight size={20} /> : <HiChevronDoubleLeft size={20} />}
-          </button>
+          </div>
         </div>
       </aside>
     </>
