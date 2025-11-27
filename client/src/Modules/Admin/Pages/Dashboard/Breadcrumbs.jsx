@@ -1,50 +1,50 @@
-// src/Modules/Admin/Pages/Dashboard/Breadcrumbs.jsx
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
+import { HiHome, HiChevronRight } from "react-icons/hi";
 
 const Breadcrumbs = () => {
   const location = useLocation();
   let paths = location.pathname.split("/").filter(Boolean);
-
-  // Remove duplicates
+  
+  // Filter out 'admin' if it is the first path to avoid redundancy if desired, 
+  // or keep it. Here we handle duplicates.
   paths = paths.filter((path, index) => path !== paths[index - 1]);
 
   return (
-    <nav className="text-gray-600 text-sm mb-4 px-4 md:px-0">
-      <ol className="flex flex-wrap items-center space-x-2">
-
-        {/* Home */}
+    <nav className="text-sm">
+      <ol className="flex flex-wrap items-center gap-2">
+        
+        {/* Home Icon */}
         <li>
           <Link
             to="/admin/banner"
-            className="text-gray-700 hover:text-black font-medium"
+            className="flex items-center text-gray-500 hover:text-[#D4B93E] transition-colors"
           >
-            Home
+            <HiHome className="w-4 h-4" />
           </Link>
         </li>
 
-        {/* Dynamic Breadcrumbs */}
         {paths.slice(1).map((path, index) => {
           const routeTo = "/" + paths.slice(0, index + 2).join("/");
+          const isLast = index === paths.slice(1).length - 1;
+          const label = path.replace(/-/g, " ");
 
           return (
-            <li key={routeTo} className="flex items-center space-x-2">
-              <span className="text-gray-400">/</span>
-
-              <Link
-                to={routeTo}
-                className="capitalize hover:text-black text-gray-700 font-medium transition truncate max-w-xs md:max-w-full"
-                title={path}
-              >
-                {/* Gold highlight for last item */}
-                {index === paths.slice(1).length - 1 ? (
-                  <span className="text-black font-semibold px-2 py-0.5 rounded-md bg-[#F7E27A]">
-                    {path.replace(/-/g, " ")}
-                  </span>
-                ) : (
-                  path.replace(/-/g, " ")
-                )}
-              </Link>
+            <li key={routeTo} className="flex items-center gap-2">
+              <HiChevronRight className="text-gray-400 w-4 h-4" />
+              
+              {isLast ? (
+                <span className="font-semibold text-gray-800 capitalize bg-[#F7E27A]/20 px-2 py-0.5 rounded text-xs border border-[#F7E27A]/50">
+                  {label}
+                </span>
+              ) : (
+                <Link
+                  to={routeTo}
+                  className="text-gray-500 hover:text-gray-900 capitalize font-medium transition-colors"
+                >
+                  {label}
+                </Link>
+              )}
             </li>
           );
         })}
