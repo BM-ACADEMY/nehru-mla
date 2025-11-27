@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../Pages/Dashboard/Sidebar";
 import Breadcrumbs from "../Pages/Dashboard/Breadcrumbs";
 import { clearAuth, getRefreshToken } from "../../../utils/auth";
-import API from "../../../api";
+import api from "../../../../utils/axiosInstance";   // Correct axios instance
 import { HiMenuAlt2, HiLogout, HiUserCircle } from "react-icons/hi";
 
 const AdminLayout = () => {
@@ -23,7 +23,7 @@ const AdminLayout = () => {
       const refresh = getRefreshToken();
       if (!refresh) return;
       try {
-        const res = await API.post("/admin/refresh/", { refresh });
+        const res = await api.post("/admin/refresh/", { refresh });
         if (res.data?.access) localStorage.setItem("admin_access_token", res.data.access);
       } catch (err) {
         clearAuth();
