@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import API from "../../../../api";
+import api from "../../../../utils/axiosInstance";   // ✅ Correct axios instance
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,7 +28,7 @@ const BlogAdmin = () => {
 
   const fetchBlogs = async () => {
     try {
-      const res = await API.get(API_URL);
+      const res = await api.get(API_URL);
       setBlogs(res.data);
     } catch {
       toast.error("Failed to load blogs");
@@ -60,12 +60,12 @@ const BlogAdmin = () => {
 
   try {
     if (isEditing) {
-      await API.patch(`${API_URL}${form._id}/`, fd, {
+      await api.patch(`${API_URL}${form._id}/`, fd, {
         headers: { "Content-Type": "multipart/form-data" }
       });
       toast.success("Blog updated");
     } else {
-      await API.post(API_URL, fd, {
+      await api.post(API_URL, fd, {
         headers: { "Content-Type": "multipart/form-data" }
       });
       toast.success("Blog created");
@@ -101,7 +101,7 @@ const BlogAdmin = () => {
 
   const handleDelete = async () => {
     try {
-      await API.delete(`${API_URL}${deleteTarget._id}/`);
+      await api.delete(`${API_URL}${deleteTarget._id}/`);
       toast.success("Blog deleted");
       fetchBlogs();
       setDeleteTarget(null);
