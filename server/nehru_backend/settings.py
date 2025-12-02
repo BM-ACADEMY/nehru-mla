@@ -30,16 +30,16 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "82.25.85.114",
-    "nehru.namathumakkalkazhagam.com",
+    "nehru.namadhumakkalkazhagam.com",
 
     # ADD THESE ↓↓↓↓↓↓
-    "namathumakkalkazhagam.com",
-    "www.namathumakkalkazhagam.com",
+    "namadhumakkalkazhagam.com",
+    "www.namadhumakkalkazhagam.com",
 ]
 
 
 
-if RENDER_EXTERNAL_HOSTNAME:  
+if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # -----------------------------
